@@ -12,7 +12,7 @@ export default function RegisterForm () {
     e.preventDefault()
     try {
       const data: unknown = await register(username, password)
-      console.log("🚀 ~ handleSubmit ~ data:", data)
+      console.log({ data })
       setMessage('User registered successfully')
     } catch (error) {
       setMessage(`Error: ${error.message}`)
