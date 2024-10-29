@@ -2,11 +2,11 @@
 
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/auth";
+const API_URL = "http://localhost:5000";
 
 export const register = async (username, password) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, {
+    const response = await axios.post(`${API_URL}/auth/register`, {
       username,
       password,
     });
@@ -18,7 +18,7 @@ export const register = async (username, password) => {
 
 export const login = async (username, password) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, {
+    const response = await axios.post(`${API_URL}/auth/login`, {
       username,
       password,
     });
@@ -30,7 +30,7 @@ export const login = async (username, password) => {
 
 export const getProfile = async (token) => {
   try {
-    const response = await axios.get(`${API_URL}/me`, {
+    const response = await axios.get(`${API_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -43,7 +43,50 @@ export const getProfile = async (token) => {
 
 export const updateProfile = async (token, userData) => {
   try {
-    const response = await axios.put(`${API_URL}/me`, userData, {
+    const response = await axios.put(`${API_URL}/auth/me`, userData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const createChat = async (token, participants) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/chat/create`,
+      { participants },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const getChats = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/chat/list`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const getChatDetails = async (token, chatId) => {
+  try {
+    const response = await axios.get(`${API_URL}/chat/${chatId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

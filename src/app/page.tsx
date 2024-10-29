@@ -1,4 +1,6 @@
 import LogoutButton from '@/components/LogoutButton'
+
+import CreateChatForm from '@/components/CreateChatForm'
 import Profile from '@/components/Profile'
 
 export default function HomePage () {
@@ -15,6 +17,7 @@ export default function HomePage () {
 
       <section className='flex flex-col gap-4'>
         <Profile />
+        <CreateChatForm />
       </section>
     </div>
   )
