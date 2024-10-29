@@ -2,11 +2,17 @@
 
 import { useEffect, useState } from 'react'
 
-import { getChatDetails } from '../services/api'
+import useChat from '../hooks/useChat'
 
-export default function ChatDetails ({ chatId }) {
-  const [chat, setChat] = useState(null)
-  const [error, setError] = useState('')
+import { getChatDetails } from '@/services/api'
+import Notification from './Notification'
+
+export default function ChatDetails ({ chatId, userId }) {
+  const [notification, setNotification] = useState(null)
+  const { messages, message, setMessage, sendMessage } = useChat(
+    chatId,
+    setNotification
+  )
 
   useEffect(() => {
     const fetchChatDetails = async () => {
@@ -26,40 +32,38 @@ export default function ChatDetails ({ chatId }) {
     fetchChatDetails()
   }, [chatId])
 
-  if (error) {
-    return <div className='text-red-500'>{error}</div>
+  const handleSendMessage = async e => {
+    e.preventDefault()
+
+    sendMessage(userId, message)
   }
 
   return (
-    <div className='max-w-md mx-auto mt-10'>
-      <h2 className='text-2xl font-bold mb-5'>Chat Details</h2>
-      {chat ? (
-        <div>
-          <h3 className='text-xl font-bold mb-3'>Participants</h3>
-          <ul>
-            {chat.participants.map((participant, index) => (
-              <li key={participant._id ?? index}>{participant.username}</li>
-            ))}
-          </ul>
-          <h3 className='text-xl font-bold mb-3 mt-5'>Messages</h3>
-          <ul>
-            {chat.messages.map((message, index) => (
-              <li
-                key={message._id ?? index}
-                className='mb-2 p-2 border rounded'
-              >
-                <strong>{message.sender.username}</strong>: {message.content}{' '}
-                <br />
-                <span className='text-gray-500 text-sm'>
-                  {new Date(message.timestamp).toLocaleString()}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div>
+    <div className="max-w-md mx-auto mt-10">
+       <h2 className="text-2xl font-bold mb-5">Chat</h2>
+       <div>
+         <ul className="mb-5">
+           {messages.map((msg, index) => (
+             <li key={index} className="mb-2 p-2 border rounded">
+               <strong>{msg.sender.username}</strong>: {msg.content} <br />
+               <span className="text-gray-500 text-sm">{new Date(msg.timestamp).toLocaleString()}</span>
+             </li>
+           ))}
+         </ul>
+         <form onSubmit={handleSendMessage}>
+           <input
+             type="text"
+             value={message}
+             onChange={(e) => setMessage(e.target.value)}
+             className="w-full px-3 py-2 border rounded mb-2"
+             placeholder="Type your message..."
+           />
+           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+             Send
+           </button>
+         </form>
+       </div>
+       <Notification message={notification} />
+     </div>
   )
 }

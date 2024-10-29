@@ -96,3 +96,20 @@ export const getChatDetails = async (token, chatId) => {
     throw error.response.data;
   }
 };
+
+export const sendMessage = async (token, chatId, content) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/chat/${chatId}/messages`,
+      { content },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
