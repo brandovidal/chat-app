@@ -40,3 +40,16 @@ export const getProfile = async (token) => {
     throw error.response.data;
   }
 };
+
+export const updateProfile = async (token, userData) => {
+  try {
+    const response = await axios.put(`${API_URL}/me`, userData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
