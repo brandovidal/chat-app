@@ -1,4 +1,5 @@
 import LogoutButton from '@/components/LogoutButton'
+import Profile from '@/components/Profile'
 
 export default function HomePage () {
   return (
@@ -6,7 +7,7 @@ export default function HomePage () {
       <h1 className='text-3xl font-bold'>Chat App</h1>
 
       <section className='flex flex-col gap-4'>
-        <h3 className='text-xl font-bold'>Links</h3>
+        <Profile />
         <ul className='flex flex-col gap-4'>
           <li>
             <a className='underline' href='/auth/register'>
