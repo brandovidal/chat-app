@@ -27,12 +27,12 @@ const useChat = (chatId, onNewMessage) => {
   }, [chatId]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:5000");
-    setSocket(newSocket);
+    const socket = io("http://localhost:5555");
+    setSocket(socket);
 
-    newSocket.emit("joinChat", chatId);
+    socket.emit("joinChat", chatId);
 
-    newSocket.on("receiveMessage", (newChat) => {
+    socket.on("receiveMessage", (newChat) => {
       setMessages(newChat.messages);
 
       if (onNewMessage) {
@@ -41,7 +41,7 @@ const useChat = (chatId, onNewMessage) => {
       }
     });
 
-    return () => newSocket.close();
+    return () => socket.close();
   }, [chatId, onNewMessage]);
 
   const sendMessage = (userId, content) => {
