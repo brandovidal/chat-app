@@ -14,6 +14,7 @@ export default function Profile () {
         if (token) {
           const data = await getProfile(token)
           setProfile(data)
+          localStorage.setItem('userId', data.id)
         } else {
           setError('No token found')
         }

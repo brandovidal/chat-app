@@ -33,7 +33,6 @@ const useChat = (chatId, onNewMessage) => {
     newSocket.emit("joinChat", chatId);
 
     newSocket.on("receiveMessage", (newChat) => {
-      console.log("🚀 ~ newSocket.on ~ newChat:", newChat);
       setMessages(newChat.messages);
 
       if (onNewMessage) {
